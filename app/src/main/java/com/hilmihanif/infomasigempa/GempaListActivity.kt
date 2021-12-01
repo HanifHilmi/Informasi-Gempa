@@ -22,7 +22,7 @@ class GempaListActivity : AppCompatActivity() {
         val rvGempa = findViewById<RecyclerView>(R.id.rv_listGempa)
 
         rvGempa.layoutManager = LinearLayoutManager(this)
-        rvGempgit la.setHasFixedSize(true)
+        rvGempa.setHasFixedSize(true)
         val adapter = GempaAdapter(){
             Toast.makeText(this,"${it.wilayah}", Toast.LENGTH_SHORT).show()
             //val intent = Intent(this,DetailActivity::class.java)
