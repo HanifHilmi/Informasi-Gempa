@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Data Hanif/Android Studio/InfomasiGempa/app/src/main/res/layout/activity_detail.xml" value="0.2015625" />
         <entry key="..\:/Data Hanif/Android Studio/InfomasiGempa/app/src/main/res/layout/activity_gempa_list.xml" value="0.1841025641025641" />
         <entry key="..\:/Data Hanif/Android Studio/InfomasiGempa/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Data Hanif/Android Studio/InfomasiGempa/app/src/main/res/layout/rv_listgempa_layout.xml" value="0.20104166666666667" />

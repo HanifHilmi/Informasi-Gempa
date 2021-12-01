@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minWidth="1980dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        tools:context=".DetailActivity">
+
+        <TextView
+            android:id="@+id/tv_wilayahdetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="wilayah : "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.045"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_shakemapdetail" />
+
+        <ImageView
+            android:id="@+id/iv_shakemapdetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="5000dp"
+            android:minHeight="500dp"
+            android:scaleType="fitXY"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_lintangbujurdetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="lintang bujur: "
+            app:layout_constraintStart_toStartOf="@+id/tv_wilayahdetail"
+            app:layout_constraintTop_toBottomOf="@+id/tv_wilayahdetail" />
+
+        <TextView
+            android:id="@+id/tv_waktudetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="waktu: "
+            app:layout_constraintStart_toStartOf="@+id/tv_lintangbujurdetail"
+            app:layout_constraintTop_toBottomOf="@+id/tv_lintangbujurdetail" />
+
+        <TextView
+            android:id="@+id/tv_magnitudedetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="magnitude: "
+            app:layout_constraintStart_toStartOf="@+id/tv_waktudetail"
+            app:layout_constraintTop_toBottomOf="@+id/tv_waktudetail" />
+
+        <TextView
+            android:id="@+id/tv_kedalamandetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="kedalaman: "
+            app:layout_constraintStart_toStartOf="@+id/tv_magnitudedetail"
+            app:layout_constraintTop_toBottomOf="@+id/tv_magnitudedetail" />
+
+        <TextView
+            android:id="@+id/tv_potensidetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Potensi Tsunami:"
+            app:layout_constraintStart_toStartOf="@+id/tv_kedalamandetail"
+            app:layout_constraintTop_toBottomOf="@+id/tv_kedalamandetail" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
