@@ -8,29 +8,23 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Transformations.map
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hilmihanif.infomasigempa.adapter.NetworkConfig
 import com.hilmihanif.infomasigempa.data.Gempa
 import com.hilmihanif.infomasigempa.data.Result
-import com.hilmihanif.infomasigempa.data.InfoGempa
-import com.hilmihanif.infomasigempa.data.KoordinatGempa
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(),OnMapReadyCallback{
-
+class MainActivity : AppCompatActivity(),OnMapReadyCallback,GoogleMap.OnMarkerClickListener{
 
     companion object{
 
@@ -41,8 +35,12 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback{
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var userLastLocation :LatLng
 
-    lateinit var list: List<Gempa>
-    lateinit var filteredData: List<KoordinatGempa>
+    lateinit var mapFragment:SupportMapFragment
+
+
+    var listGempa = mutableListOf<Gempa>()
+    var markerList  = mutableListOf<Marker>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,39 +49,23 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback{
 
         val btn_dataLengkap = findViewById<Button>(R.id.btn_dataLengkap)
 
-        val onetimecheck = false;
-        if (isLocationPermissionGranted()) {
-            val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-            mapFragment.getMapAsync(this)
-
-
-        } else {
-            requestLocationPermission()
-            finish()
-            overridePendingTransition(0, 0);
-            startActivity(getIntent());
-            overridePendingTransition(0, 0);
-
-        }
-
-
-
 
         NetworkConfig().getService().getAllData().enqueue(object: Callback<Result> {
             override fun onResponse(call: Call<Result>, response: Response<Result>) {
+                Log.d("Button Click",call.toString())
                 val data = response.body()
                 data?.let{
 
-                    Log.d("check data",data.toString())
-                    filteredData = filter_data(data.infoGempa.gempa)
+                    Log.d("check data",it.toString())
+                    listGempa.addAll(it.infoGempa.gempa)
+
                     btn_dataLengkap.setOnClickListener() {
-
-
+                        Log.d("Button Click",data.toString())
                         val intent = Intent(this@MainActivity, GempaListActivity::class.java)
                         intent.putExtra(GempaListActivity.EXTRA_LIST_GEMPA,data.infoGempa)
                         startActivity(intent)
-                    }
 
+                    }
                 }
             }
 
@@ -91,6 +73,28 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback{
                 Log.e("failure detected",t.toString())
             }
         })
+
+        if (isLocationPermissionGranted()) {
+            mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+            mapFragment.getMapAsync(this)
+
+
+        } else {
+            requestLocationPermission()
+
+
+
+//            finish()
+//            overridePendingTransition(0, 0);
+//            startActivity(getIntent());
+//            overridePendingTransition(0, 0);
+
+        }
+
+
+
+
+
 
 
     }
@@ -111,28 +115,54 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback{
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED){
             mMap.setMyLocationEnabled(true)
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    location?.let{
-                        userLastLocation = LatLng(it.latitude,it.longitude)
-                        mMap.addMarker(MarkerOptions().position(userLastLocation).title("Lokasi Anda"))
-                    }
 
-                    filteredData?.let{
-                        for(i in it ){
-                               mMap.addMarker(MarkerOptions()
-                                   .position(i.getLatLong())
-                                   .title(i.wilayah))
-                        }
-                    }
+        }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                location?.let{
+                    userLastLocation = LatLng(it.latitude,it.longitude)
+                    mMap.addMarker(MarkerOptions().position(userLastLocation).title("Lokasi Anda"))
+
                     mMap.moveCamera(CameraUpdateFactory
                         .newLatLng(userLastLocation))
+
+
                 }
+            }.addOnCanceledListener {
+                requestLocationPermission()
+                userLastLocation = LatLng(0.78,113.92)
+            }
+
+
+
+        for(i in listGempa ){
+            val temp:Marker? = mMap.addMarker(MarkerOptions()
+                .position(i.getLatLong())
+                .title(i.wilayah))
+            Log.d("check marker",i.toString())
+            if (temp != null) {
+                markerList.add(temp)
+            }
+
         }
+        Log.d("check filter",listGempa.toString())
+
+
+
+
+
+        mMap.setOnMarkerClickListener(this)
+
+
+
 
 
     }
+
+
+
+
 
     fun isLocationPermissionGranted(): Boolean {
         return ContextCompat.checkSelfPermission(
@@ -149,19 +179,18 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback{
     }
 
 
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val i = 0
+        for(i in markerList){
+            if (marker.position == i.position){
+                Toast.makeText(this,"Test ${marker.position.toString()}",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this,"lokasi anda  ${marker.position.toString()}",Toast.LENGTH_SHORT).show()
+            }
 
-    fun filter_data(listData: List<Gempa>):List<KoordinatGempa>{
-        val listKoordinat = mutableListOf<KoordinatGempa>()
-        for(data in listData){
-            listKoordinat.add(KoordinatGempa(
-                data.wilayah,
-                data.lintang,
-                data.bujur,
-                ))
         }
-        return listKoordinat.toList()
+        return false
     }
-
 
 
 }

@@ -2,11 +2,12 @@ package com.hilmihanif.infomasigempa.data
 
 
 import android.os.Parcelable
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Gempa(
+class Gempa(
     @SerializedName("Tanggal")
     val tanggal:String,
     @SerializedName("Jam")
@@ -28,4 +29,30 @@ data class Gempa(
     @SerializedName("Potensi")
     val potensi:String,
 
-    ):Parcelable
+    ):Parcelable{
+        fun getLintang():Double{
+            var temp:String = ""
+            for(i:Char in this.lintang){
+                if(i != ' '){
+                    temp += i
+                }else{
+                    return temp.toDouble()
+                }
+            }
+            return 0.0
+        }
+        fun getBujur():Double{
+            var temp:String = ""
+            for(i:Char in this.bujur){
+                if(i != ' '){
+                    temp += i
+                }else{
+                    return temp.toDouble()
+                }
+            }
+            return 0.0
+        }
+    fun getLatLong():LatLng{
+        return LatLng(this.getLintang(),this.getBujur())
+    }
+    }
