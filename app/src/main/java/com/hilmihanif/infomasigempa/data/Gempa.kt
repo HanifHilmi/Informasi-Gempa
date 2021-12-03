@@ -35,28 +35,31 @@ class Gempa(
         companion object{
             var markerCount = 0;
         }
-
+        // contoh data coordinates -7.60,105.86
         fun getLintang():Double{
-            var temp:String = ""
-            for(i:Char in this.lintang){
-                if(i != ' '){
-                    temp += i
+            var count:Int =0
+            for(i:Char in this.coordinates){
+                if(i != ','){
+                    count++
                 }else{
-                    return temp.toDouble()
+                    break
                 }
             }
-            return 0.0
+            val temp = coordinates.subSequence(0,count).toString()
+            return temp.toDouble()
         }
         fun getBujur():Double{
-            var temp:String = ""
-            for(i:Char in this.bujur){
-                if(i != ' '){
-                    temp += i
+            var count:Int =0
+            for(i:Char in this.coordinates){
+                if(i != ','){
+                    count++
                 }else{
-                    return temp.toDouble()
+                    break
                 }
+
             }
-            return 0.0
+            val temp = coordinates.subSequence(count+1,coordinates.length).toString()
+            return temp.toDouble()
         }
     fun getLatLong():LatLng{
         return LatLng(this.getLintang(),this.getBujur())
