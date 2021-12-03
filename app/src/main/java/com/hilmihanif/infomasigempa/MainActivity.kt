@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hilmihanif.infomasigempa.adapter.NetworkConfig
 import com.hilmihanif.infomasigempa.data.Gempa
+import com.hilmihanif.infomasigempa.data.InfoGempa
 import com.hilmihanif.infomasigempa.data.Result
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +28,8 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity(),OnMapReadyCallback,GoogleMap.OnMarkerClickListener{
 
     companion object{
-
+        const val EXTRA_LOCATION_PERMISION: String = "EXTRA_LOCATION_PERMISION"
+        const val EXTRA_LIST_GEMPA: String = "EXTRA_LIST_GEMPA"
         const val LOCATION_PERMISSION_CODE = 101
     }
 
@@ -38,8 +40,8 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback,GoogleMap.OnMarkerCl
     lateinit var mapFragment:SupportMapFragment
 
 
-    var listGempa = mutableListOf<Gempa>()
-    var markerList  = mutableListOf<Marker>()
+    val listGempa = mutableListOf<Gempa>()
+    val markerList  = mutableListOf<Marker>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,44 +52,37 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback,GoogleMap.OnMarkerCl
         val btn_dataLengkap = findViewById<Button>(R.id.btn_dataLengkap)
 
 
-        NetworkConfig().getService().getAllData().enqueue(object: Callback<Result> {
-            override fun onResponse(call: Call<Result>, response: Response<Result>) {
-                Log.d("Button Click",call.toString())
-                val data = response.body()
-                data?.let{
+        val resultGempa  = intent.getParcelableExtra<InfoGempa>(GempaListActivity.EXTRA_LIST_GEMPA)
+        resultGempa?.let {
+            listGempa.addAll(it.gempa)
 
-                    Log.d("check data",it.toString())
-                    listGempa.addAll(it.infoGempa.gempa)
+        }
+        Log.d("check list gempa", listGempa.toString())
 
-                    btn_dataLengkap.setOnClickListener() {
-                        Log.d("Button Click",data.toString())
-                        val intent = Intent(this@MainActivity, GempaListActivity::class.java)
-                        intent.putExtra(GempaListActivity.EXTRA_LIST_GEMPA,data.infoGempa)
-                        startActivity(intent)
+        btn_dataLengkap.setOnClickListener() {
+            Log.d("Button Click",resultGempa.toString())
+            val intent = Intent(this@MainActivity, GempaListActivity::class.java)
+            intent.putExtra(GempaListActivity.EXTRA_LIST_GEMPA,resultGempa)
+            startActivity(intent)
 
-                    }
-                }
-            }
+        }
 
-            override fun onFailure(call: Call<Result>, t: Throwable) {
-                Log.e("failure detected",t.toString())
-            }
-        })
+
+
 
         if (isLocationPermissionGranted()) {
             mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
             mapFragment.getMapAsync(this)
 
-
         } else {
             requestLocationPermission()
+            finish()
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
 
 
 
-//            finish()
-//            overridePendingTransition(0, 0);
-//            startActivity(getIntent());
-//            overridePendingTransition(0, 0);
 
         }
 
@@ -148,15 +143,7 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback,GoogleMap.OnMarkerCl
         }
         Log.d("check filter",listGempa.toString())
 
-
-
-
-
         mMap.setOnMarkerClickListener(this)
-
-
-
-
 
     }
 
@@ -180,15 +167,7 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback,GoogleMap.OnMarkerCl
 
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        val i = 0
-        for(i in markerList){
-            if (marker.position == i.position){
-                Toast.makeText(this,"Test ${marker.position.toString()}",Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this,"lokasi anda  ${marker.position.toString()}",Toast.LENGTH_SHORT).show()
-            }
-
-        }
+        Toast.makeText(this,"Test ${marker.position}",Toast.LENGTH_SHORT).show()
         return false
     }
 

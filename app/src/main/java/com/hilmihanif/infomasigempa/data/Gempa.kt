@@ -2,7 +2,10 @@ package com.hilmihanif.infomasigempa.data
 
 
 import android.os.Parcelable
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -28,8 +31,11 @@ class Gempa(
     val wilayah:String,
     @SerializedName("Potensi")
     val potensi:String,
+):Parcelable {
+        companion object{
+            var markerCount = 0;
+        }
 
-    ):Parcelable{
         fun getLintang():Double{
             var temp:String = ""
             for(i:Char in this.lintang){
@@ -55,4 +61,11 @@ class Gempa(
     fun getLatLong():LatLng{
         return LatLng(this.getLintang(),this.getBujur())
     }
+    fun createGempaMarker(map: GoogleMap): Marker? {
+        markerCount++
+        return map.addMarker(
+            MarkerOptions()
+            .position(this.getLatLong())
+            .title(this.wilayah))
     }
+}

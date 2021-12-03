@@ -41,7 +41,6 @@ class GempaListActivity : AppCompatActivity() {
         val resultGempa  = intent.getParcelableExtra<InfoGempa>(EXTRA_LIST_GEMPA)
 
         resultGempa?.let{
-            val listGempa:List<Gempa>
             rvGempa.adapter = adapter
             adapter.setData(it.gempa)
         }
