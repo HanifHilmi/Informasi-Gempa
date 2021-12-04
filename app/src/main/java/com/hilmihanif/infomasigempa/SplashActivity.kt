@@ -35,8 +35,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val pbSplash = findViewById<ProgressBar>(R.id.pb_splash)
-
+        pbSplash = findViewById<ProgressBar>(R.id.pb_splash)
 
 
 
@@ -50,14 +49,9 @@ class SplashActivity : AppCompatActivity() {
                 Log.d("check response", call.toString())
                 val data = response.body()
                 data?.let {
-                    Log.d("Button Click", data.toString())
-
-
                     Log.d("check data", it.toString())
                     listGempa.addAll(it.infoGempa.gempa)
                     mainActivtiyintent.putExtra(MainActivity.EXTRA_LIST_GEMPA, data.infoGempa)
-
-
 
                 }
             }
@@ -113,7 +107,6 @@ class SplashActivity : AppCompatActivity() {
                     }else if(i == 90){
                         i=80
                     }
-
                 }
                 try {
                     Thread.sleep(100)
