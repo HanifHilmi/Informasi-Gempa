@@ -29,7 +29,8 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var mainActivtiyintent : Intent
     private lateinit var pbSplash:ProgressBar
     private var i:Int = 0
-    private val handler = Handler()
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,26 +89,23 @@ class SplashActivity : AppCompatActivity() {
             }
         }
 
-//        Handler(mainLooper).postDelayed({
-//            startActivity(mainActivtiyintent)
-//        }, TIMEOUT)
-
         i = pbSplash.progress
         Thread {
             // this loop will run until the value of i becomes 99
             while (i < 100) {
                 i += 10
                 // Update the progress bar and display the current value
-                handler.post {
+                Handler(Looper.getMainLooper()).post {
                     pbSplash.progress = i
 
                     if(pbSplash.progress==90 && listGempa.isNotEmpty()){
                         startActivity(mainActivtiyintent)
                         finish()
                     }else if(i == 90){
-                        i=80
+                        i -= 10
                     }
                 }
+
                 try {
                     Thread.sleep(100)
                 } catch (e: InterruptedException) {
