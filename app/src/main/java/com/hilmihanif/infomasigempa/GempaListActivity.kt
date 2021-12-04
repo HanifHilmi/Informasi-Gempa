@@ -7,6 +7,8 @@ import android.icu.text.IDNA
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +27,9 @@ class GempaListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gempa_list)
+
+        supportActionBar!!.title = "Data Gempa di Indonesia Terbaru"
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         val rvGempa = findViewById<RecyclerView>(R.id.rv_listGempa)
 
@@ -49,5 +54,10 @@ class GempaListActivity : AppCompatActivity() {
 
 
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }

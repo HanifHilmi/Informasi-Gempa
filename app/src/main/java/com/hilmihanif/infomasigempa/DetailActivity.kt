@@ -17,6 +17,8 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
 
         val tvWilayahDetail = findViewById<TextView>(R.id.tv_wilayahdetail)
         val tvWaktuDetail = findViewById<TextView>(R.id.tv_waktudetail)
@@ -30,6 +32,9 @@ class DetailActivity : AppCompatActivity() {
 
 
         dataGempa?.let {
+
+            supportActionBar!!.title = "${it.wilayah}"
+
             tvWilayahDetail.text = it.wilayah
             tvKedalamanDetail.text = "Kedalaman: ${it.kedalaman}"
             tvWaktuDetail.text = "Waktu: ${it.tanggal} pukul ${it.jam} "
@@ -50,4 +55,10 @@ class DetailActivity : AppCompatActivity() {
 
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
 }
+
