@@ -29,7 +29,8 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var mainActivtiyintent : Intent
     private lateinit var pbSplash:ProgressBar
     private var i:Int = 0
-
+    private lateinit var listGempa: MutableList<Gempa>
+    //private val handler = Handler()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +41,7 @@ class SplashActivity : AppCompatActivity() {
 
 
 
-        val listGempa = mutableListOf<Gempa>()
+        listGempa = mutableListOf<Gempa>()
 
         mainActivtiyintent = Intent(this, MainActivity::class.java)
 
@@ -70,6 +71,7 @@ class SplashActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_GRANTED -> {
                 // You can use the API that requires the permission.
                 mainActivtiyintent.putExtra(MainActivity.EXTRA_LOCATION_PERMISION, true)
+                loading()
             }
 
             ActivityCompat.shouldShowRequestPermissionRationale(
@@ -85,16 +87,17 @@ class SplashActivity : AppCompatActivity() {
                     arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
                     MainActivity.LOCATION_PERMISSION_CODE
                 )
-                mainActivtiyintent.putExtra(MainActivity.EXTRA_LOCATION_PERMISION, false)
+                mainActivtiyintent.putExtra(MainActivity.EXTRA_LOCATION_PERMISION, true)
             }
         }
 
+    }
+    private fun loading(){
         i = pbSplash.progress
         Thread {
             // this loop will run until the value of i becomes 99
             while (i < 100) {
                 i += 10
-                // Update the progress bar and display the current value
                 Handler(Looper.getMainLooper()).post {
                     pbSplash.progress = i
 
@@ -102,7 +105,7 @@ class SplashActivity : AppCompatActivity() {
                         startActivity(mainActivtiyintent)
                         finish()
                     }else if(i == 90){
-                        i -= 10
+                        i=80
                     }
                 }
 
@@ -117,8 +120,24 @@ class SplashActivity : AppCompatActivity() {
 
 
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == MainActivity.LOCATION_PERMISSION_CODE && grantResults.isNotEmpty()){
+            for(index in grantResults.indices){
+                if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
+                    Log.d("check permissiongranted","${permissions[index]} is granted" )
+                    loading()
+                }
+            }
+        }
 
 
 
 
+    }
 }
