@@ -31,7 +31,7 @@ class GempaListActivity : AppCompatActivity() {
         rvGempa.layoutManager = LinearLayoutManager(this)
         rvGempa.setHasFixedSize(true)
         val adapter = GempaAdapter(){
-            Toast.makeText(this,"${it.wilayah}", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this,"${it.wilayah}", Toast.LENGTH_SHORT).show()
             val intent = Intent(this,DetailActivity::class.java)
             intent.putExtra(DetailActivity.EXTRA_GEMPA, it)
             startActivity(intent)

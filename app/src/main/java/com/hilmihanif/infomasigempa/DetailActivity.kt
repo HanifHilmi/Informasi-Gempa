@@ -44,6 +44,8 @@ class DetailActivity : AppCompatActivity() {
             ivShakeMap.load(shakemapUrl){
                 placeholder(R.drawable.ic_image_search)
                 error(R.drawable.ic_image_notfound)
+
+
             }
 
         }

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hilmihanif.infomasigempa.R
 import com.hilmihanif.infomasigempa.data.Gempa
@@ -28,9 +29,14 @@ class GempaAdapter(
 
         fun bind(gempa: Gempa) {
             tvWilayah.text = gempa.wilayah
-            tvDeskripsi.text = "${gempa.tanggal} ${gempa.jam}"
-            //if(gempa.potensi.subSequence(0,4).equals("Tidak")){ }
+            tvDeskripsi.text = "Terjadi pada ${gempa.jam} ${gempa.tanggal} "
             tvPotensi.text = gempa.potensi
+            if(gempa.potensi.subSequence(0,5).equals("Tidak")){
+                tvPotensi.setTextColor(ContextCompat.getColor(itemView.context,R.color.green))
+            }else{
+                tvPotensi.setTextColor(ContextCompat.getColor(itemView.context,R.color.red))
+            }
+
 
             tvMagnitude.text = gempa.magnitude
             itemView.setOnClickListener{onClickListener(gempa)}

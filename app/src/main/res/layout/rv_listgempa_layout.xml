@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@android:color/holo_blue_light"
+    app:cardBackgroundColor="@color/teal_200"
     app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:text="TextView"
+            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/tv_magnitudeItem"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +55,19 @@
             android:layout_marginEnd="16dp"
             android:text="TextView"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Magnitude:"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_magnitudeItem"
+            app:layout_constraintEnd_toEndOf="@+id/tv_magnitudeItem"
+            app:layout_constraintStart_toStartOf="@+id/tv_magnitudeItem" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
